@@ -62,7 +62,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Initialize EAS project
-        run: npx eas-cli init
+        run: npx eas-cli init --yes
 
       # With the flag --auto-submit the build will be submitted to testflight / play store  automatically.
       # The app will not be released without manual action
