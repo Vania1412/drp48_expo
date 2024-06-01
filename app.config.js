@@ -4,6 +4,9 @@ export default {
   expo: {
     name: "Expo Firebase Starter",
     slug: "expo-firebase",
+    android: {
+      package: "com.android_app.saving"
+    },
     privacy: "public",
     platforms: ["ios", "android"],
     version: "0.19.0",

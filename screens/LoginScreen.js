@@ -1,118 +1,67 @@
-import React, { useState } from "react";
-import { Text, StyleSheet } from "react-native";
-import { Formik } from "formik";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import React from 'react';
+import { Text, StyleSheet, Image, TouchableOpacity, View, ScrollView } from 'react-native';
+import { Colors } from '../config';
 
-import { View, TextInput, Logo, Button, FormErrorMessage } from "../components";
-import { Images, Colors, auth } from "../config";
-import { useTogglePasswordVisibility } from "../hooks";
-import { loginValidationSchema } from "../utils";
+// Replace the following path with the actual path where you store your profile picture
+const profilePic = require('../assets/flame.png');
 
 export const LoginScreen = ({ navigation }) => {
-  const [errorState, setErrorState] = useState("");
-  const { passwordVisibility, handlePasswordVisibility, rightIcon } =
-    useTogglePasswordVisibility();
-
-  const handleLogin = (values) => {
-    const { email, password } = values;
-    signInWithEmailAndPassword(auth, email, password).catch((error) =>
-      setErrorState(error.message)
-    );
-  };
   return (
-    <>
-      <View isSafe style={styles.container}>
-        <KeyboardAwareScrollView enableOnAndroid={true}>
-          {/* LogoContainer: consist app logo and screen title */}
-          <View style={styles.logoContainer}>
-            <Logo uri={Images.logo} />
-            <Text style={styles.screenTitle}>Welcome back!</Text>
-          </View>
-          <Formik
-            initialValues={{
-              email: "",
-              password: "",
-            }}
-            validationSchema={loginValidationSchema}
-            onSubmit={(values) => handleLogin(values)}
-          >
-            {({
-              values,
-              touched,
-              errors,
-              handleChange,
-              handleSubmit,
-              handleBlur,
-            }) => (
-              <>
-                {/* Input fields */}
-                <TextInput
-                  name="email"
-                  leftIconName="email"
-                  placeholder="Enter email"
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  textContentType="emailAddress"
-                  autoFocus={true}
-                  value={values.email}
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                />
-                <FormErrorMessage
-                  error={errors.email}
-                  visible={touched.email}
-                />
-                <TextInput
-                  name="password"
-                  leftIconName="key-variant"
-                  placeholder="Enter password"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  secureTextEntry={passwordVisibility}
-                  textContentType="password"
-                  rightIcon={rightIcon}
-                  handlePasswordVisibility={handlePasswordVisibility}
-                  value={values.password}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                />
-                <FormErrorMessage
-                  error={errors.password}
-                  visible={touched.password}
-                />
-                {/* Display Screen Error Messages */}
-                {errorState !== "" ? (
-                  <FormErrorMessage error={errorState} visible={true} />
-                ) : null}
-                {/* Login button */}
-                <Button style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.buttonText}>Login</Text>
-                </Button>
-              </>
-            )}
-          </Formik>
-          {/* Button to navigate to SignupScreen to create a new account */}
-          <Button
-            style={styles.borderlessButtonContainer}
-            borderless
-            title={"Create a new account?"}
-            onPress={() => navigation.navigate("Signup")}
-          />
-          <Button
-            style={styles.borderlessButtonContainer}
-            borderless
-            title={"Forgot Password"}
-            onPress={() => navigation.navigate("ForgotPassword")}
-          />
-        </KeyboardAwareScrollView>
-      </View>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Trip To Italy</Text>
+          <Text style={styles.subHeader}>23 users saving for this goal</Text>
+          <Text style={styles.subHeader}>64 users achieved this goal</Text>
+          <Text style={styles.subHeader}>Users expected to achieve within a similar timeframe as you:</Text>
+        </View>
 
-      {/* App info footer */}
+        <View style={styles.profileContainer}>
+          <View style={styles.profile}>
+            <Text style={styles.profileName}>George</Text>
+            <Image source={profilePic} style={styles.profilePic} />
+            <TouchableOpacity style={styles.followButton}>
+              <Text style={styles.buttonText}>Follow</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.profile}>
+            <Text style={styles.profileName}>Ivy</Text>
+            <Image source={profilePic} style={styles.profilePic} />
+            <TouchableOpacity style={styles.followButton}>
+              <Text style={styles.buttonText}>Follow</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <Text style={styles.header}>Featured Stories & Tips</Text>
+        <View style={styles.profileTip}>
+          <Image source={profilePic} style={styles.profilePicTip} />
+          <Text style={styles.profileNameTip}>Tim</Text>
+        </View>
+        <Text style={styles.subHeader}>
+          Buy round-trip tickets as soon as you know the starting date of your trip. Always keep track of the ticket price!
+        </Text>
+        <View style={styles.profileTip}>
+          <Image source={profilePic} style={styles.profilePicTip} />
+          <Text style={styles.profileNameTip}>Olivia</Text>
+        </View>
+        <Text style={styles.subHeader}>
+          If you are going to Firenze, try Trattoria Dall'oste!! It's so delicious, definitely worth the price.
+        </Text>
+        <Text style={styles.link}>Read More Stories & Tips</Text>
+
+        <Text style={styles.header}>Memory Collection</Text>
+        <View>
+          <Text style={styles.subHeader}>John</Text>
+          <Text style={styles.subHeader}>Freya</Text>
+          <Text style={styles.subHeader}>Isabella</Text>
+        </View>
+      </ScrollView>
+
       <View style={styles.footer}>
         <Text style={styles.footerText}>Expo Firebase Starter App</Text>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -122,43 +71,80 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     paddingHorizontal: 12,
   },
-  logoContainer: {
-    alignItems: "center",
+  scrollViewContainer: {
+    paddingVertical: 20,
   },
-  screenTitle: {
-    fontSize: 32,
-    fontWeight: "700",
-    color: Colors.black,
-    paddingTop: 20,
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  subHeader: {
+    fontSize: 16,
+    marginVertical: 5,
+  },
+  profileContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
+  },
+  profile: {
+    alignItems: 'center',
+  },
+  profileName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  profilePic: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginVertical: 5,
+  },
+  followButton: {
+    backgroundColor: Colors.orange,
+    padding: 5,
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: Colors.white,
+  },
+  profileTip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  profilePicTip: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  profileNameTip: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  link: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+    marginVertical: 5,
   },
   footer: {
     backgroundColor: Colors.white,
     paddingHorizontal: 12,
     paddingBottom: 48,
-    alignItems: "center",
+    alignItems: 'center',
   },
   footerText: {
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.orange,
   },
-  button: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-    backgroundColor: Colors.orange,
-    padding: 10,
-    borderRadius: 8,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: Colors.white,
-    fontWeight: "700",
-  },
-  borderlessButtonContainer: {
-    marginTop: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });
+
+export default LoginScreen;
