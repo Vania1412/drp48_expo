@@ -7,26 +7,32 @@ on:
 
 jobs:
   build:
+    name: EAS build
     runs-on: ubuntu-latest
-
-    env:
-      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
     steps:
-      - name: Checkout code
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+            exit 1
+          fi
+
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: 16.x
+          cache: yarn
 
-      - name: Install EAS CLI
+      - name: Install Expo CLI
         run: npm install -g eas-cli
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install --immutable
 
-      - name: Build Android app
-        run: eas build -p android --non-interactive
- 
+      - name: EAS build
+        run: eas build --platform android --non-interactive --profile preview
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
