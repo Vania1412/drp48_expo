@@ -33,6 +33,8 @@ jobs:
 
       - name: Initialize EAS project
         run: eas init --non-interactive --id $EAS_PROJECT_ID
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
         run: npm install --immutable
