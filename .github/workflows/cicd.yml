@@ -30,7 +30,7 @@ jobs:
         run: npm install -g eas-cli
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: npm install --immutable
 
       - name: EAS build
         run: eas build --platform android --non-interactive --profile preview
