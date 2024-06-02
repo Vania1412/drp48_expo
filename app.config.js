@@ -24,6 +24,7 @@ export default {
     ios: {
       supportsTablet: true,
     },
+    "owner": "rainie1412", 
     extra: {
       apiKey: process.env.API_KEY,
       authDomain: process.env.AUTH_DOMAIN,
