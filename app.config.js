@@ -31,8 +31,8 @@ export default {
       storageBucket: process.env.STORAGE_BUCKET,
       messagingSenderId: process.env.MESSAGING_SENDER_ID,
       appId: process.env.APP_ID,
-      eas: {
-        projectId: "ddc2ae19-b560-4830-992c-91718955ced6"
+      "eas": {
+        "projectId": "ddc2ae19-b560-4830-992c-91718955ced6"
       },
     },
   },
